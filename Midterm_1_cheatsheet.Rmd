@@ -21,7 +21,6 @@ library(tidyverse)
 library(skimr)
 ```
 
-
 ## Lab 2.1 Functions
 
 #Types of Data Use the 'class()' function to see what type of data you
@@ -47,10 +46,10 @@ is.integer(my_integer) #is my_numeric an integer?
 ```
 
 Example: change type of data to a factor using as.factor()
+
 ```{r}
 fisheries$country <- as.factor(fisheries$country)
 ```
-
 
 Missing Data (NAs) Useful functions when dealing with NAs: `is.na` or
 `anyNA`
@@ -509,7 +508,6 @@ Or to update the object:
   #select(lakeid, scalelength) %>%
   #filter(lakeid == "AL")
 ```
-
 
 #Arrange `arrange()` - Default is ascending order
 
