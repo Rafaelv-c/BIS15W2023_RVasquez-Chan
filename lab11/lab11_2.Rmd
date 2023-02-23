@@ -50,12 +50,12 @@ There are many options to change the theme of your plots. Have a look [here](htt
 ```{r}
 p <- homerange %>% 
   ggplot(aes(x=taxon, fill=trophic.guild))+
-  geom_bar(na.rm=T, position="dodge")
+  geom_bar(na.rm=T, position="dodge", alpha = 0.85)
 p
 ```
 
 ```{r}
-p+theme_classic()+
+p+theme_light()+
   theme(axis.text.x = element_text(angle = 60, hjust=1))+
   labs(title = "Observations by Taxon in Homerange Data",
        x = NULL,
@@ -87,7 +87,7 @@ ls("package:ggthemes")[grepl("theme_", ls("package:ggthemes"))]
 ```
 
 ```{r}
-p+ theme_igray()+
+p+ theme_pander()+
   theme(legend.position = "bottom",
         axis.text.x = element_text(angle = 60, hjust=1))+
   labs(title = "Observations by Taxon in Homerange Data",
@@ -116,7 +116,7 @@ The [R Color Brewer](http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3) w
 
 Here I chose the `Paired` palette. Take a moment and experiment with other options.
 ```{r}
-p+scale_fill_brewer(palette = "BuPu")+
+p+scale_fill_brewer(palette = "PuRd")+
   theme(legend.position = "bottom",
         axis.text.x = element_text(angle = 60, hjust=1))+
   labs(title = "Observations by Taxon in Homerange Data",
@@ -129,11 +129,12 @@ p+scale_fill_brewer(palette = "BuPu")+
 You can also use `paleteer` to build a custom palette for consistency. To access the `paleteer` collection, I add it to a new object.
 ```{r}
 colors <- paletteer::palettes_d_names
+colors
 ```
 
 Now we can display the palettes. Assign the palette to `my_palette` and then build this base R bar plot. There are a lot of options; `paleteer` is a collection of popular palettes. I really like the [`ggsci` package] (https://cran.r-project.org/web/packages/ggsci/vignettes/ggsci.html)
 ```{r}
-my_palette <- paletteer_d("ggprism::flames")
+my_palette <- paletteer_d("colorBlindness::paletteMartin")
 ```
 
 ```{r}

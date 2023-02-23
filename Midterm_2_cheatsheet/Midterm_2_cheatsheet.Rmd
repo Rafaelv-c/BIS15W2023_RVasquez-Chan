@@ -1,0 +1,10 @@
+---
+title: "Midterm_2_cheatsheet"
+output: html_document
+date: "2023-02-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+

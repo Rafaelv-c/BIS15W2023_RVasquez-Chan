@@ -39,14 +39,56 @@ library("gapminder")
 
 ## Questions
 The questions below are open-ended and have many possible solutions. Your approach should, where appropriate, include numerical summaries and visuals. Be creative; assume you are building an analysis that you would ultimately present to an audience of stakeholders. Feel free to try out different `geoms` if they more clearly present your results.  
+```{r}
+my_palette <- paletteer_d("colorBlindness::paletteMartin")
+```
 
 **1. Use the function(s) of your choice to get an idea of the overall structure of the data frame, including its dimensions, column names, variable classes, etc. As part of this, determine how NA's are treated in the data.**  
+```{r}
+gapminder <- gapminder
+glimpse(gapminder)
+```
+
+```{r}
+miss_var_summary(gapminder)
+```
+```{r}
+summary(gapminder)
+```
 
 **2. Among the interesting variables in gapminder is life expectancy. How has global life expectancy changed between 1952 and 2007?**
+```{r}
+gapminder %>% 
+  ggplot(aes(x=year, y = lifeExp))+
+  geom_smooth()
+```
 
 **3. How do the distributions of life expectancy compare for the years 1952 and 2007?**
+```{r}
+gapminder %>% 
+  ggplot(aes(x=year, y = lifeExp,))+
+  geom_boxplot()+
+  facet_wrap(~year)+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))+
+  scale_fill_manual(values=my_palette)
+```
 
 **4. Your answer above doesn't tell the whole story since life expectancy varies by region. Make a summary that shows the min, mean, and max life expectancy by continent for all years represented in the data.**
+```{r}
+gapminder %>% 
+  ggplot(aes(x=continent, y = lifeExp,))+
+  geom_boxplot()+
+  facet_wrap(~year)+
+   theme(axis.text.x = element_text(angle = 60, hjust = 1))+
+  scale_fill_manual(values=my_palette)
+```
+```{r}
+gapminder %>% 
+  group_by(continent, year) %>% 
+  summarize(min_lifeexp = min(lifeExp),
+            avg_lifeexp = mean(lifeExp),
+            max_lifeexp = max(lifeExp))
+```
 
 **5. How has life expectancy changed between 1952-2007 for each continent?**
 
