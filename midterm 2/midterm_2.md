@@ -292,43 +292,126 @@ surgery %>%
 9. (4 points) When is the best month to have surgery? Make a chart that shows the 30-day mortality and complications for the patients by month. `mort30` is the variable that shows whether or not a patient survived 30 days post-operation.
 
 ```r
-surgery %>% 
-  group_by(month) %>% 
-  summarize(avg_mort30rate = mean(ccsmort30rate),
-            avg_ccscomplicationrate = mean(ccscomplicationrate)) %>% 
-  arrange(desc(avg_mort30rate))
+surgery$mort30<-ifelse(surgery$mort30=="Yes",1,0)
+surgery
 ```
 
 ```
-## # A tibble: 12 × 3
-##    month avg_mort30rate avg_ccscomplicationrate
-##    <chr>          <dbl>                   <dbl>
-##  1 Aug          0.00443                   0.136
-##  2 May          0.00436                   0.132
-##  3 Jun          0.00435                   0.132
-##  4 Sep          0.00435                   0.135
-##  5 Nov          0.00433                   0.134
-##  6 Jul          0.00432                   0.134
-##  7 Oct          0.00430                   0.133
-##  8 Apr          0.00430                   0.131
-##  9 Jan          0.00429                   0.134
-## 10 Feb          0.00427                   0.134
-## 11 Mar          0.00421                   0.131
-## 12 Dec          0.00418                   0.133
+## # A tibble: 32,001 × 25
+##    ahrq_ccs   age gender race      asa_s…¹   bmi basel…² basel…³ basel…⁴ basel…⁵
+##    <chr>    <dbl> <chr>  <chr>     <chr>   <dbl> <chr>   <chr>   <chr>   <chr>  
+##  1 <Other>   67.8 M      Caucasian I-II     28.0 No      Yes     No      No     
+##  2 <Other>   39.5 F      Caucasian I-II     37.8 No      Yes     No      No     
+##  3 <Other>   56.5 F      Caucasian I-II     19.6 No      No      No      No     
+##  4 <Other>   71   M      Caucasian III      32.2 No      Yes     No      No     
+##  5 <Other>   56.3 M      African … I-II     24.3 Yes     No      No      No     
+##  6 <Other>   57.7 F      Caucasian I-II     40.3 No      Yes     No      No     
+##  7 <Other>   56.6 M      Other     IV-VI    64.6 No      Yes     No      Yes    
+##  8 <Other>   64.2 F      Caucasian III      43.2 No      Yes     No      No     
+##  9 <Other>   66.2 M      Caucasian III      28.0 No      Yes     No      No     
+## 10 <Other>   20.1 F      Caucasian I-II     27.4 Yes     No      No      No     
+## # … with 31,991 more rows, 15 more variables: baseline_digestive <chr>,
+## #   baseline_osteoart <chr>, baseline_psych <chr>, baseline_pulmonary <chr>,
+## #   baseline_charlson <dbl>, mortality_rsi <dbl>, complication_rsi <dbl>,
+## #   ccsmort30rate <dbl>, ccscomplicationrate <dbl>, hour <dbl>, dow <chr>,
+## #   month <chr>, moonphase <chr>, mort30 <dbl>, complication <chr>, and
+## #   abbreviated variable names ¹​asa_status, ²​baseline_cancer, ³​baseline_cvd,
+## #   ⁴​baseline_dementia, ⁵​baseline_diabetes
 ```
 
-10. (4 points) Make a plot that visualizes the chart from question #9. Make sure that the months are on the x-axis. Do a search online and figure out how to order the months Jan-Dec.
+```r
+surgery$complication<-ifelse(surgery$complication=="Yes",1,0)
+surgery
+```
+
+```
+## # A tibble: 32,001 × 25
+##    ahrq_ccs   age gender race      asa_s…¹   bmi basel…² basel…³ basel…⁴ basel…⁵
+##    <chr>    <dbl> <chr>  <chr>     <chr>   <dbl> <chr>   <chr>   <chr>   <chr>  
+##  1 <Other>   67.8 M      Caucasian I-II     28.0 No      Yes     No      No     
+##  2 <Other>   39.5 F      Caucasian I-II     37.8 No      Yes     No      No     
+##  3 <Other>   56.5 F      Caucasian I-II     19.6 No      No      No      No     
+##  4 <Other>   71   M      Caucasian III      32.2 No      Yes     No      No     
+##  5 <Other>   56.3 M      African … I-II     24.3 Yes     No      No      No     
+##  6 <Other>   57.7 F      Caucasian I-II     40.3 No      Yes     No      No     
+##  7 <Other>   56.6 M      Other     IV-VI    64.6 No      Yes     No      Yes    
+##  8 <Other>   64.2 F      Caucasian III      43.2 No      Yes     No      No     
+##  9 <Other>   66.2 M      Caucasian III      28.0 No      Yes     No      No     
+## 10 <Other>   20.1 F      Caucasian I-II     27.4 Yes     No      No      No     
+## # … with 31,991 more rows, 15 more variables: baseline_digestive <chr>,
+## #   baseline_osteoart <chr>, baseline_psych <chr>, baseline_pulmonary <chr>,
+## #   baseline_charlson <dbl>, mortality_rsi <dbl>, complication_rsi <dbl>,
+## #   ccsmort30rate <dbl>, ccscomplicationrate <dbl>, hour <dbl>, dow <chr>,
+## #   month <chr>, moonphase <chr>, mort30 <dbl>, complication <dbl>, and
+## #   abbreviated variable names ¹​asa_status, ²​baseline_cancer, ³​baseline_cvd,
+## #   ⁴​baseline_dementia, ⁵​baseline_diabetes
+```
+
+
 
 ```r
 surgery %>% 
   group_by(month) %>% 
-  summarize(avg_mort30rate = mean(ccsmort30rate),
-            avg_ccscomplicationrate = mean(ccscomplicationrate)) %>% 
-  ggplot(aes())
+  summarize(numberofmort = sum(mort30),
+            numberofcolmplication = sum(complication))
 ```
 
-![](midterm_2_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
+```
+## # A tibble: 12 × 3
+##    month numberofmort numberofcolmplication
+##    <chr>        <dbl>                 <dbl>
+##  1 Apr             12                   321
+##  2 Aug              9                   462
+##  3 Dec              4                   237
+##  4 Feb             17                   343
+##  5 Jan             19                   407
+##  6 Jul             12                   301
+##  7 Jun             14                   410
+##  8 Mar             12                   324
+##  9 May             10                   333
+## 10 Nov              5                   325
+## 11 Oct              8                   377
+## 12 Sep             16                   424
+```
+
+10. (4 points) Make a plot that visualizes the chart from question #9. Make sure that the months are on the x-axis. Do a search online and figure out how to order the months Jan-Dec.
+
+
+
+```r
+surgery %>% 
+ group_by(month) %>% 
+  summarize(numberofmort = sum(mort30),
+            numberofcolmplication = sum(complication)) %>% 
+  ggplot(aes(x=month, y=numberofmort))+
+  geom_col()+
+  scale_x_discrete(limits = month.abb)+
+   labs(title = "Number of Mortalities per Month", 
+       x="Month",
+       y="Number of Mortalities")
+```
+
+![](midterm_2_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
+
+
+```r
+surgery %>% 
+ group_by(month) %>% 
+  summarize(numberofmort = sum(mort30),
+            numberofcolmplication = sum(complication)) %>% 
+  ggplot(aes(x=month, y=numberofcolmplication))+
+  geom_col()+
+  scale_x_discrete(limits = month.abb)+
+     labs(title = "Number of Complications per Month", 
+       x="Month",
+       y="Number of Complications")
+```
+
+![](midterm_2_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
 
 Please provide the names of the students you have worked with with during the exam:
+
+Shefali Shuresh
+Ingrid Jimenez-Ledesma
 
 Please be 100% sure your exam is saved, knitted, and pushed to your github repository. No need to submit a link on canvas, we will find your exam in your repository.
